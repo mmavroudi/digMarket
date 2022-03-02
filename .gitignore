@@ -1,8 +1,11 @@
 # created by virtualenv automatically
 
+db.sqlite3
 bin/
 include/
 lib/
+.idea
 .DS_STORE
 .Python
 *.py[cod]
+venv/
