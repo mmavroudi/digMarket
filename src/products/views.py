@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 # Create your views here.
 
 from .models import Product
-
+from .models import Category
 
 def detail_slug_view(request, slug=None):
     product = Product.objects.get(slug=slug)
@@ -20,6 +20,18 @@ def detail_slug_view(request, slug=None):
         }
     return render(request, template, context)
 
+def category_slug_view(request, slug=None):
+    category = Category.objects.get(slug=slug)
+    try:
+        category = get_object_or_404(Category, slug=slug)
+    except Category.MultipleObjectsReturned:
+        category = Category.objects.filter(slug=slug).order_by("-name").first()
+
+    template = "category_view.html"
+    context = {
+        "object": category
+        }
+    return render(request, template, context)
 
 def detail_view(request, object_id=None):
     product = get_object_or_404(Product, id=object_id)
@@ -40,5 +52,12 @@ def list_view(request):
     }
     return render(request, template, context)
 
+def category_view(request, object_id=None):
+    category = get_object_or_404(Category, id=object_id)
+    template = "category_view.html"
+    context = {
+        "object": category
+    }
+    return render(request, template, context)
 
 

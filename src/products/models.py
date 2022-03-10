@@ -13,3 +13,11 @@ class Product(models.Model):
     def __str__(self): #def_unicode_(self) in Python 2
         return self.title
 
+
+class Category(models.Model):
+    name = models.CharField(max_length=30)
+    slug = models.SlugField(default='slug_field')
+
+
+    def __str__(self):
+        return self.name
