@@ -21,9 +21,3 @@ def product_pre_save_receiver(sender, instance, *args, **kwargs):
 
 pre_save.connect(product_pre_save_receiver, sender=Product)
 
-# def product_post_save_receiver(sender, instance, *args, **kwargs):
-#   if instance.slug != slugify(instance.title):
-#       instance.slug = slugify(instance.title)
-#       instance.save()
-
-#post_save.connect(product_post_save_receiver, sender=Product)
