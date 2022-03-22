@@ -42,6 +42,19 @@ class ProductAddForm(forms.Form):
 
 class ProductModelForm(forms.ModelForm):
     publish = forms.ChoiceField(widget=forms.RadioSelect, choices=PUBLISH_CHOICES, required=False)
+    title = forms.CharField(label='Title', widget=forms.TextInput(
+        attrs={
+            "class": "custom-class",
+            "placeholder": "Title",
+        }
+    ))
+    description = forms.CharField(widget=forms.Textarea(
+        attrs={
+            "class": "my-custom-class",
+            "placeholder": "Description",
+            "some-attr": "this",
+        }
+    ))
     class Meta:
         model = Product
         fields = [
@@ -54,7 +67,7 @@ class ProductModelForm(forms.ModelForm):
         price = self.cleaned_data.get("price")
         if price <= 1.00:
             raise forms.ValidationError("Price must be greater than $1.00")
-        elif price >= 99.99:
+        elif price >= 100.00:
             raise forms.ValidationError("Price must be less than $100")
         else:
             return price
