@@ -69,5 +69,3 @@ def list_view(request):
         "queryset": queryset
     }
     return render(request, template, context)
-
-
