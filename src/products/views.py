@@ -1,13 +1,43 @@
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
 # Create your views here.
 
-from digitalmarket.mixins import MultiSlugMixin
+from digitalmarket.mixins import MultiSlugMixin, SubmitBtnMixin
 
 from .forms import ProductAddForm, ProductModelForm
 from .models import Product
+
+
+class ProductCreateView(SubmitBtnMixin, CreateView):
+    model = Product
+    template_name = "form.html"
+    form_class = ProductModelForm
+    success_url = "/products/add/"
+    submit_btn = "Add Product"
+
+
+class ProductUpdateView(SubmitBtnMixin, MultiSlugMixin, UpdateView):
+    model = Product
+    template_name = "form.html"
+    form_class = ProductModelForm
+    success_url = "/products/"
+    submit_btn = "Update Product"
+
+
+class ProductDetailView(MultiSlugMixin, DetailView):
+    model = Product
+
+
+class ProductListView(ListView):
+    model = Product
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super(ProductListView, self).get_queryset(**kwargs)
+        return qs
+
 
 def create_view(request):
     form = ProductModelForm(request.POST or None)
@@ -22,6 +52,7 @@ def create_view(request):
             "submit_btn": "Create Product"
     }
     return render(request, template, context)
+
 
 def update_view(request, object_id=None):
     product = get_object_or_404(Product, id=object_id)
@@ -39,37 +70,6 @@ def update_view(request, object_id=None):
     return render(request, template, context)
 
 
-class ProductDetailView(MultiSlugMixin, DetailView):
-    model = Product
-
-   # def get_object(self, *args, **kwargs):
-   #     slug = self.kwargs.get("slug")
-   #     ModelClass = self.model
-   #     if slug is not None:
-   #         try:
-   #             obj = get_object_or_404(ModelClass, slug=slug)
-   #         except ModelClass.MultipleObjectsReturned:
-   #             obj = ModelClass.objects.filter(slug=slug).order_by("-title").first()
-   #     else:
-   #         obj = super(ProductDetailView, self).get_object(*args, **kwargs)
-   #     return obj
-
-
-class ProductListView(ListView):
-    model = Product
-   # template_name = "list_view.html"
-
-   # def get_context_data(self, **kwargs):
-   #     context = super(ProductListView, self).get_context_data(**kwargs)
-   #     print(context)
-   #     context["queryset"] = self.get_queryset()
-   #     return context
-
-    def get_queryset(self, *args, **kwargs):
-        qs = super(ProductListView, self).get_queryset(**kwargs)
-        #qs = qs.filter(title__icontains="Product")
-        return qs
-
 def create_view(request):
     form = ProductModelForm(request.POST or None)
     if form.is_valid():
@@ -83,6 +83,7 @@ def create_view(request):
             "submit_btn": "Create Product"
     }
     return render(request, template, context)
+
 
 def update_view(request, object_id=None):
     product = get_object_or_404(Product, id=object_id)
