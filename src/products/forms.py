@@ -63,6 +63,11 @@ class ProductModelForm(forms.ModelForm):
             "price",
         ]
 
+    def clean(self, *args, **kwargs):
+        cleaned_data = super(ProductModelForm, self).clean(*args, **kwargs)
+        print(cleaned_data)
+        return cleaned_data
+
     def clean_price(self):
         price = self.cleaned_data.get("price")
         if price <= 1.00:
