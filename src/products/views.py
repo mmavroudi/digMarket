@@ -11,6 +11,19 @@ from .forms import ProductAddForm, ProductModelForm
 from .models import Product
 
 
+
+class ProductDetailView(MultiSlugMixin, DetailView):
+    model = Product
+
+
+class ProductListView(ListView):
+    model = Product
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super(ProductListView, self).get_queryset(**kwargs)
+        return qs
+
+
 class ProductCreateView(SubmitBtnMixin, CreateView):
     model = Product
     template_name = "form.html"
@@ -25,18 +38,6 @@ class ProductUpdateView(SubmitBtnMixin, MultiSlugMixin, UpdateView):
     form_class = ProductModelForm
     success_url = "/products/"
     submit_btn = "Update Product"
-
-
-class ProductDetailView(MultiSlugMixin, DetailView):
-    model = Product
-
-
-class ProductListView(ListView):
-    model = Product
-
-    def get_queryset(self, *args, **kwargs):
-        qs = super(ProductListView, self).get_queryset(**kwargs)
-        return qs
 
 
 def create_view(request):
