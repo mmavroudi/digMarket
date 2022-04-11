@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from .views import home_view as home_view
 
 from products.views import (
     ProductCreateView,
@@ -25,6 +26,7 @@ from products.views import (
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', home_view, name='home_view'),
     url(r'^create/$', 'products.views.create_view', name='create_view'),
     url(r'^detail/(?P<object_id>\d+)/edit/$', 'products.views.update_view', name='update_view'),
     url(r'^detail/(?P<object_id>\d+)/$', 'products.views.detail_view', name='detail_view'),
