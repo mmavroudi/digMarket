@@ -5,13 +5,17 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
 # Create your views here.
 
-from digitalmarket.mixins import MultiSlugMixin, SubmitBtnMixin
-
+from digitalmarket.mixins import (
+        LoginRequiredMixin,
+        MultiSlugMixin,
+        SubmitBtnMixin
+        )
 from .forms import ProductAddForm, ProductModelForm
+from .mixins import ProductManagerMixin
 from .models import Product
 
 
-class ProductCreateView(SubmitBtnMixin, CreateView):
+class ProductCreateView(LoginRequiredMixin, SubmitBtnMixin, CreateView):
     model = Product
     template_name = "form.html"
     form_class = ProductModelForm
@@ -19,7 +23,7 @@ class ProductCreateView(SubmitBtnMixin, CreateView):
     submit_btn = "Add Product"
 
 
-class ProductUpdateView(SubmitBtnMixin, MultiSlugMixin, UpdateView):
+class ProductUpdateView(ProductManagerMixin, SubmitBtnMixin, MultiSlugMixin, UpdateView):
     model = Product
     template_name = "form.html"
     form_class = ProductModelForm

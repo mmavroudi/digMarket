@@ -3,6 +3,7 @@ from django.db.models.signals import pre_save, post_save
 from django.utils.text import slugify
 # Create your models here.
 
+
 class Product(models.Model):
     title = models.CharField(max_length=30)
     slug = models.SlugField(blank=True)  # unique=True
