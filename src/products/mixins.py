@@ -11,17 +11,14 @@ class ProductManagerMixin(LoginRequiredMixin, object):
         try:
             obj.user == user
         except:
-            print("false for user 1")
             raise Http404
         try:
             user in obj.managers.all()
         except:
-            print("false for user 2")
             raise Http404
 
         if obj.user == user or user in obj.managers.all():
             return obj
         else:
-            print("false for user 2")
             raise Http404
 
