@@ -6,8 +6,7 @@ class ProductManagerMixin(LoginRequiredMixin, object):
     def get_object(self, *args, **kwargs):
         user = self.request.user
         obj = super(ProductManagerMixin, self).get_object(*args, **kwargs)
-        print(user)
-        print(obj.user)
+
         try:
             obj.user == user
         except:
