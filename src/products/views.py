@@ -1,15 +1,19 @@
 from django.http import Http404
+from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
 # Create your views here.
 
-from digitalmarket.mixins import MultiSlugMixin, SubmitBtnMixin
-
+from digitalmarket.mixins import (
+        LoginRequiredMixin,
+        MultiSlugMixin,
+        SubmitBtnMixin
+        )
 from .forms import ProductAddForm, ProductModelForm
+from .mixins import ProductManagerMixin
 from .models import Product
-
 
 
 class ProductDetailView(MultiSlugMixin, DetailView):
@@ -24,11 +28,11 @@ class ProductListView(ListView):
         return qs
 
 
-class ProductCreateView(SubmitBtnMixin, CreateView):
+class ProductCreateView(LoginRequiredMixin, SubmitBtnMixin, CreateView):
     model = Product
     template_name = "form.html"
     form_class = ProductModelForm
-    success_url = "/products/"
+    #success_url = "/products/"
     submit_btn = "Add Product"
 
     def form_valid(self, form):
@@ -39,21 +43,16 @@ class ProductCreateView(SubmitBtnMixin, CreateView):
         # add all default users
         return valid_data
 
+    #def get_success_url(self):
+    #    return reverse("products:list")
 
-class ProductUpdateView(SubmitBtnMixin, MultiSlugMixin, UpdateView):
+class ProductUpdateView(ProductManagerMixin, SubmitBtnMixin, MultiSlugMixin, UpdateView):
     model = Product
     template_name = "form.html"
     form_class = ProductModelForm
     success_url = "/products/"
     submit_btn = "Update Product"
 
-    def get_object(self, *args, **kwargs):
-        user = self.request.user
-        obj = super(ProductUpdateView, self).get_object(*args, **kwargs)
-        if obj.user == user or user in obj.managers.all():
-            return obj
-        else:
-            raise Http404
 
 def create_view(request):
     form = ProductModelForm(request.POST or None)
