@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="row">
+    <h1>Products List</h1>
+
+    <div class="col-12">
+        <div class="row">
+          {% for product in products %}
+          <div class="col-sm-4 mb-4 mt-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">{{ product.title }}</h5>
+                <p class="card-text">{{ product.description }}</p>
+                <span class="float-start lead text-muted p-2">${{ product.price }}</span>
+                <a href="{% url 'product_detail_slug_view' product.slug %}" class="btn btn-primary float-end">Product details</a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
