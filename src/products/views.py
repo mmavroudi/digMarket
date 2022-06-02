@@ -50,7 +50,7 @@ class ProductUpdateView(ProductManagerMixin, SubmitBtnMixin, MultiSlugMixin, Upd
     model = Product
     template_name = "form.html"
     form_class = ProductModelForm
-    success_url = "/products/"
+    #success_url = "/products/"
     submit_btn = "Update Product"
 
 
