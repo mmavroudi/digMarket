@@ -1,6 +1,8 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel='stylesheet' href='{% static "css/base.css" %}' />
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,9 +17,7 @@
     <title>{% block title %} {% endblock %} | Digital Marketplace</title>
     <style>
 
-       h1 {
-            color : red;
-           }
+
        {% block style %}{% endblock style %}
     </style>
 </head>
